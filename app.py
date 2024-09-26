@@ -26,7 +26,6 @@ def clean(data):
         cleaned["height"] = int(cleaned["height"])
         cleaned_players.append(cleaned)
     return cleaned_players
-print(clean(copy_of_data))
 #defines a function that asks for the data inputed, the lower bound, and the upper bound and outputs the players on each team
 def players_on_teams(data,lower,upper):
     new_data = copy.deepcopy(data)
