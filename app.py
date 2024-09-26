@@ -2,6 +2,8 @@
 import constants
 #importing copy so i can deep copy my constants
 import copy
+#create a copy of constants so it doesnt alter the original data
+copy_of_data = copy.deepcopy(constants.PLAYERS)
 #creating a variable that if changed to false it will end the loop and exit the tool
 do_continue = True
 #defining a function that cleans each persons data so that it seperates the gaurdians name, their first and last name, and sets their experience to true of false instead of yes or no
@@ -16,13 +18,15 @@ def clean(data):
             cleaned["guardians"] = player["guardians"].split(" and ")
         else:
             cleaned["guardians"] = player["guardians"].split(" ")
-        if player["experience"] == "Yes" or "yes":
-            cleaned["experience"] = True
-        elif player["experience"] == "No" or "no":
-            cleaned["experience"] = False
-        cleaned["height"] = int(player["height"].split(" ")[0])
+        if player["experience"] == "Yes" or player["experience"] == "yes" or player["experience"] == "YES":
+            cleaned["experience"] = bool("true")
+        elif player["experience"] == "No" or player["experience"] == "no" or player["experience"] == "NO":
+            cleaned["experience"] = bool("")
+        cleaned["height"] = player["height"].split(" ")[0]
+        cleaned["height"] = int(cleaned["height"])
         cleaned_players.append(cleaned)
     return cleaned_players
+print(clean(copy_of_data))
 #defines a function that asks for the data inputed, the lower bound, and the upper bound and outputs the players on each team
 def players_on_teams(data,lower,upper):
     new_data = copy.deepcopy(data)
@@ -34,17 +38,17 @@ def players_on_teams(data,lower,upper):
         spot += 1
     return players_on_team
 if __name__ == "__main__":
-    clean_players = clean(constants.PLAYERS)
+    clean_players = clean(copy_of_data)
     #creates a variables that devides the number of players by teams so the code knows how many people to put on each team
     players_per_team = int(len(clean_players)) / int(len(constants.TEAMS))
     #makes sure that the numer it outputs is an integer
     players_per_team = int(players_per_team)
     #calls the funtion that puts players on teams and utilizes the variable that calculated how many players were on each team.
-    players_on_panthers = players_on_teams(constants.PLAYERS,0,players_per_team)
+    players_on_panthers = players_on_teams(copy_of_data,0,players_per_team)
     players_on_panthers = ", ".join(players_on_panthers)
-    players_on_bandits = players_on_teams(constants.PLAYERS, players_per_team , (2 * players_per_team))
+    players_on_bandits = players_on_teams(copy_of_data, players_per_team , (2 * players_per_team))
     players_on_bandits = ", ".join(players_on_bandits)
-    players_on_warriors = players_on_teams(constants.PLAYERS,(2 * players_per_team), (3 * players_per_team))
+    players_on_warriors = players_on_teams(copy_of_data,(2 * players_per_team), (3 * players_per_team))
     players_on_warriors = ", ".join(players_on_warriors)
     #i added a dunder main here so if it gets imported my code doesnt run, my variables and funtions would just be defined
     #starts the while loop that will continue until they want to exit the tool
@@ -151,4 +155,3 @@ if __name__ == "__main__":
             pass
     #once the loop is broken it will print a goodbye message and end the program
     print("I hope you enjoyed the app come again!")
-
